@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION pg_temp.BT(i TEXT) 
+CREATE OR REPLACE FUNCTION pg_temp.bt_diff(i TEXT) 
 RETURNS text AS '
 declare
   	list int array[10] := regexp_split_to_array(i, ''-'');
@@ -11,8 +11,8 @@ declare
   foreach var in array list
    LOOP 
 	  if (aux is not null) then
-      sequence := array_append(sequence, (100*
-(var-aux)/NULLIF(aux,0))::text);
+      sequence := array_append(sequence,
+(var-aux)::text);
       else
 	  sequence :=  array_append(sequence, 
       COALESCE(''0'')); end if;
@@ -21,4 +21,4 @@ declare
     RETURN sequence;
   END
 ' LANGUAGE PLPGSQL ;
-select pg_temp.BT('2-2-5-3-0-2');
+select pg_temp.BT_diff('2-2-5-3-0-2');
