@@ -12,7 +12,7 @@ declare
    LOOP 
 	  if (aux is not null) then
       sequence := array_append(sequence, (100*
-(var-aux)/aux)::text);
+(var-aux)/NULLIF(aux,0))::text);
       else
 	  sequence :=  array_append(sequence, 
       COALESCE(''0'')); end if;
@@ -21,3 +21,4 @@ declare
     RETURN sequence;
   END
 ' LANGUAGE PLPGSQL ;
+select pg_temp.BT('2-2-5-3-0-2');
