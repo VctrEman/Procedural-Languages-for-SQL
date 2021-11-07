@@ -1,0 +1,23 @@
+CREATE OR REPLACE FUNCTION pg_temp.BT(i TEXT) 
+RETURNS text AS '
+declare
+  	list int array[10] := regexp_split_to_array(i, ''-'');
+    sequence text array[10];
+    status varchar(20);
+    num int := array_length(list,1);
+    var int;
+    aux int;
+  BEGIN
+  foreach var in array list
+   LOOP 
+	  if (aux is not null) then
+      sequence := array_append(sequence, (100*
+(var-aux)/aux)::text);
+      else
+	  sequence :=  array_append(sequence, 
+      COALESCE(''0'')); end if;
+      aux = var::text;
+   END LOOP;
+    RETURN sequence;
+  END
+' LANGUAGE PLPGSQL ;
